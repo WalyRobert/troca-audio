@@ -1,5 +1,24 @@
 # Troca Audio
 
+## Escolha de provedor e chave por aba
+
+Transcrição e síntese de voz: Gemini ou OpenAI. DeepSeek não é oferecido para essas funções. Edição local, remoção/troca de faixa e exportação continuam independentes de qualquer chave.
+
+Abra **Configurar provedores para transcrição e voz** e aplique cada perfil separadamente. O modelo de transcrição e o de síntese são distintos; ambos são editáveis. As vozes acompanham o provedor de síntese selecionado.
+
+A chave pessoal permanece apenas na memória desta página, sem localStorage, sessionStorage, arquivos ou logs do aplicativo. Recarregar/fechar exige configurar novamente. O campo é limpo ao aplicar; apagar o perfil remove a chave e interrompe a espera local. A remoção não desfaz solicitações já enviadas. Alterar provedor invalida a configuração anterior; não há fallback, reaproveitamento automático da chave de outro serviço ou repetição após erro.
+
+**Verificar configuração sem gerar** verifica somente formato, destino e presença da chave localmente. Não contata o provedor, não comprova validade, acesso ao modelo nem cota gratuita. A geração só ocorre por ação explícita e pode consumir créditos. Os modelos iniciais são exemplos editáveis; disponibilidade e limites dependem da conta.
+
+Opcionalmente escolha a chave do servidor de forma explícita e configure a variável do provedor no `.env`: `GEMINI_API_KEY`, `DEEPSEEK_API_KEY` ou `OPENAI_API_KEY`. Modelos são selecionados pela interface. As variáveis Gemini de modelo continuam atendendo clientes antigos da API sem seleção de provedor. Não publique `.env` reais.
+
+O backend usa destinos HTTPS fixos, valida origem e função, limita corpo/resposta e prazo, e encaminha a chave somente em header para o serviço escolhido. A chave não entra no prompt, URL ou resposta. Não são aceitas URLs arbitrárias. Hospedagem compartilhada exige HTTPS e autenticação de usuários; o servidor padrão é local.
+
+Testes de integração usam transporte controlado, sem geração externa ou consumo de créditos. `store: false` na OpenAI não é uma garantia de retenção zero pelo provedor; consulte as políticas de cada serviço.
+
+Referências: [visão DeepSeek](https://api-docs.deepseek.com/guides/vision/), [OpenAI áudio](https://developers.openai.com/api/docs/guides/audio), [OpenAI TTS/PCM](https://developers.openai.com/api/docs/guides/text-to-speech), [Gemini](https://ai.google.dev/gemini-api/docs).
+
+
 Troca ou remoção de áudio de vídeos curtos no navegador, com transcrição e síntese Gemini opcionais. Autor: Waly Robert. Derivado do projeto do Google AI Studio; esta edição corrige codecs fixos, formato WAV e ciclo de vida de recursos.
 
 ## Executar
@@ -34,3 +53,5 @@ O botão **Usar vídeo de exemplo** carrega uma mídia sintética embutida, sem 
 
 A exportação aguarda a preparação das faixas antes de iniciar o gravador. Diferença de duração acima de 250 ms ou 5% (o maior) bloqueia a entrega do arquivo e informa erro; mantenha a aba ativa. Esse limite não certifica sincronismo labial.
 
+
+A síntese OpenAI solicita PCM16 mono a 24 kHz e o servidor monta WAV com cabeçalho real. A transcrição OpenAI envia multipart com MIME/extensão coerentes; o Gemini recebe áudio inline. Formatos inválidos e respostas incompletas são rejeitados, sem criar áudio fictício.
