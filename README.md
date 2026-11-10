@@ -24,3 +24,13 @@ Arquivos locais ficam no navegador no fluxo de edição. Ao consultar transcriç
 `npm test`, `npm run test:server`, `npm run build`. Testes cobrem negociação de codecs, limites, cancelamento, falha de reprodução, descarte tardio de URL e contratos de transcrição/TTS com respostas simuladas. O CI repete instalação, testes e build. Nenhuma chamada paga é necessária nos testes; não certificam qualidade da voz ou todos os codecs/hardwares.
 
 Esta edição adapta a interface para execução fora do Studio; o projeto no Studio permanece separado. Licença de redistribuição do código ainda não definida pelo autor; dependências mantêm suas próprias licenças.
+
+
+## Início e diagnóstico simplificados
+
+Após `npm ci`, execute `npm run diagnostico` para verificar Node, dependências, build e presença de configuração sem revelar chaves ou consumir cota. Execute `npm run iniciar` para compilar a versão atual e abrir o servidor local em um único terminal. A faixa de estado da interface distingue configuração ausente e integração ainda não comprovada. Encontrar uma chave não confirma que ela é válida nem que existe cota gratuita. Nenhum teste de geração é iniciado automaticamente.
+
+O botão **Usar vídeo de exemplo** carrega uma mídia sintética embutida, sem upload ou dependência de IA. No Troca Audio, **Usar tom de exemplo** permite testar a substituição da faixa localmente.
+
+A exportação aguarda a preparação das faixas antes de iniciar o gravador. Diferença de duração acima de 250 ms ou 5% (o maior) bloqueia a entrega do arquivo e informa erro; mantenha a aba ativa. Esse limite não certifica sincronismo labial.
+
